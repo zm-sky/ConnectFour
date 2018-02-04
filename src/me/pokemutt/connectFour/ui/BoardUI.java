@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import me.pokemutt.connectFour.game.Board;
+import me.pokemutt.connectFour.game.Cell;
+import me.pokemutt.connectFour.game.Chip;
+import me.pokemutt.connectFour.game.ChipType;
 import me.zmsky.core.GameBox;
 
 /**
@@ -14,9 +17,9 @@ import me.zmsky.core.GameBox;
 public class BoardUI extends GUI{
 
 	/**
-	 * Indica el tamaño usual de las celdas.
+	 * Indica el tamaño porcentual usual de las celdas.
 	 */
-	private static final int cellSize = 85;
+	private static final int cellSize = 100;
 	
 	/**
 	 * El tablero que vamos a estar dibujando, y que contiene toda la informacion
@@ -28,6 +31,11 @@ public class BoardUI extends GUI{
 	 * Las celdas de esta UI para mostrar informacion de manera grafica.
 	 */
 	private CellUI[][] celdas;
+	
+	/**
+	 * La celda que actualmente tiene seleccionada el usuario.
+	 */
+	private CellUI celdaSeleccionada;
 	
 	/**
 	 * Crea una nueva UI para dibujar un objeto de tipo tablero.
@@ -64,7 +72,8 @@ public class BoardUI extends GUI{
 		
 		for(int row = 0; row < celdas.length; row++){
 			for(int col = 0; col < celdas[row].length; col++){
-				CellUI ui = new CellUI();
+				CellUI ui = new CellUI(board.getCells()[row][col]);
+				
 				ui.x = cellX;
 				ui.y = cellY;
 				ui.width = cellSize;
@@ -132,13 +141,24 @@ public class BoardUI extends GUI{
 		for(CellUI[] row : celdas){
 			for(CellUI celda : row){
 				celda.onMouseMove(button, x, y, Drag);
+				
+				if(celda.isHighlighted)
+					celdaSeleccionada = celda;
+				
 			}
 		}
 	}
 
 	@Override
 	public void onMouseClick(int button, int x, int y) {
-		
+		/**
+		 * Checamos que haya una celda seleccionada, para ver si agregamos
+		 * una nueva ficha al tablero.
+		 */
+		if(celdaSeleccionada != null && celdaSeleccionada.isHighlighted){
+			Cell celda = celdaSeleccionada.getCell();
+			board.addChip(celda.getCol(), new Chip(ChipType.BLUE));
+		}
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class Board {
 		//Inicializamos el arreglo.
 		for(int i = 0; i < tablero.length; i++){
 			for(int j = 0; j < tablero[i].length; j++){
-				tablero[i][j] = new Cell();
+				tablero[i][j] = new Cell(i, j);
 			}
 		}
 	}
@@ -41,16 +41,19 @@ public class Board {
 	 * la ficha debe aparecer en el espacio mas lejano que este vacio. Si no hay mas espacio
 	 * en la columna para una ficha, entonces no se realiza ninguna operacion.
 	 * 
-	 * @param row La columna en donde agregaremos la nueva ficha.
+	 * @param col La columna en donde agregaremos la nueva ficha.
 	 * @param chip La ficha que vamos a agregar.
 	 * 
 	 * @return Si se pudo agregar la ficha.
 	 */
-	public boolean addChip(int row, Chip chip){
-		for(int i = 0; i < tablero[row].length; i++){
+	public boolean addChip(int col, Chip chip){
+		//Vamos a empezar desde la parte inferior del tablero, y buscar de abajo
+		//hacia arriba para ver si hay un espacio vacio en determinada columna.
+		
+		for(int i = tablero.length-1; i > -1; i--){
 			//Si el espacio esta vacio, vamos a ocupar este espacio para la ficha nueva.
-			if(tablero[row][i] == null){
-				tablero[row][i].addChip(chip);
+			if(tablero[i][col].isEmpty()){
+				tablero[i][col].addChip(chip);
 				
 				return true;
 			}

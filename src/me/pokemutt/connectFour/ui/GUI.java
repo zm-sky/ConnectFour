@@ -8,6 +8,9 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.pokemutt.connectFour.network.C4Client;
+import me.zmsky.core.GameBox;
+
 /**
  *
  * @author Raul Karim Sabag Ballesteros
@@ -39,17 +42,17 @@ public abstract class GUI{
 	/**
 	 * The default UI font.
 	 */
-	public static Font UIFont = new Font("Calibri", Font.BOLD, 16);
+	public static final Font UIFont = GameBox.getDefaultFont().deriveFont(18f);
 	
 	/**
 	 * Indicates the color of the UI.
 	 */
-	protected Color backgroundColor = new Color(120, 120, 120);
+	protected Color backgroundColor = Color.BLACK;
 	
 	/**
 	 * Indicates the highlight color of the UI.
 	 */
-	protected Color highlightColor = new Color(170, 170, 170);
+	protected Color highlightColor = new Color(210, 210, 210);
 	
 	/**
 	 * Determines if the mouse is currently hovering over this UI element.
@@ -91,7 +94,7 @@ public abstract class GUI{
 				return;
 			}
 		}
-		
+    	
 		isHighlighted = false;
     }
 	

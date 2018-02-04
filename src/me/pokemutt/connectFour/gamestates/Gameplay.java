@@ -52,6 +52,11 @@ public class Gameplay extends GameState{
 	}
 
 	@Override
+	public void onMouseClick(int button, int x, int y) {
+		manager.onMouseClick(button, x, y);
+	}
+	
+	@Override
 	public Enum<?> getStateID() {
 		return GameStates.GAMEPLAY;
 	}

@@ -23,7 +23,7 @@ public class ConnectFour {
 		//Registrando nuestros estados de juego.
 		GameBox.getStateHandler().registerState(new MainMenu());
 		GameBox.getStateHandler().registerState(new Gameplay());
-		GameBox.getStateHandler().enterState(GameStates.GAMEPLAY);
+		GameBox.getStateHandler().enterState(GameStates.MAINMENU);
 		
 		//Finalmente iniciamos el juego.
 		GameBox.StartGame();

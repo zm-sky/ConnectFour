@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import me.pokemutt.connectFour.ConnectFour;
+import me.pokemutt.connectFour.math.Vector2;
+import me.pokemutt.connectFour.particles.ParticleEmitter;
+import me.pokemutt.connectFour.particles.ParticleType;
+import me.pokemutt.connectFour.ui.BoundingBox;
 import me.pokemutt.connectFour.ui.Button;
 import me.pokemutt.connectFour.ui.GUI;
 import me.pokemutt.connectFour.ui.UIListener;
@@ -31,23 +34,60 @@ public class MainMenu extends GameState implements UIListener{
 	private UIManager manager;
 	
 	/**
+	 * Emisores de particulas, sirven de estetica para el menu.
+	 */
+	private ParticleEmitter blueWaveEmitter;
+	private ParticleEmitter redWaveEmitter;
+	
+	/**
 	 * Crea una instancia de este estado de juego. 
 	 */
 	public MainMenu(){
 		manager = new UIManager();
 		manager.setState(MAINMENU);
 		
+		crearEmisores();
+		crearUI();
+	}
+
+	/**
+	 * Crea toda la UI del main menu.
+	 */
+	private void crearUI(){
 		//Valores temporales, para determinar desde donde poner los elementos de la UI en pantalla.
 		int x = GameBox.getWindowWidth()/2;
 		int y = GameBox.getWindowHeight()/2;
 		
-		manager.addUIElement(new Button(MAINMENU, "PlayButton", "Play Game", x, y - 70, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "OnlineButton", "Online", x, manager.getUIElement("PlayButton").getY() + 78, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "OptionsButton", "Options", x, manager.getUIElement("OnlineButton").getY() + 78, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "ExitButton", "Quit", x, manager.getUIElement("OptionsButton").getY() + 78, 120, 50));
+		manager.addUIElement(new BoundingBox(MAINMENU, "BoundingBox", Color.BLACK, 0.7f, x, y+10, 300, 300));
+		manager.addUIElement(new Button(MAINMENU, "PlayButton", "Join Server", x, y - 70, 150, 50));
+		manager.addUIElement(new Button(MAINMENU, "OnlineButton", "Host Server", x, manager.getUIElement("PlayButton").getY() + 78, 150, 50));
+		manager.addUIElement(new Button(MAINMENU, "OptionsButton", "Options", x, manager.getUIElement("OnlineButton").getY() + 78, 150, 50));
+		manager.addUIElement(new Button(MAINMENU, "ExitButton", "Quit", x, manager.getUIElement("OptionsButton").getY() + 78, 150, 50));
 		manager.addUIListener(this);
 	}
-
+	
+	/**
+	 * Crea los emisores de particulas.
+	 */
+	private void crearEmisores(){
+		blueWaveEmitter = new ParticleEmitter(ParticleType.BLUEWAVE);
+		blueWaveEmitter.posicion = new Vector2(-200, -400);
+		blueWaveEmitter.direccion = new Vector2(0,1);
+		blueWaveEmitter.velocidad = new Vector2(1, 2);
+		blueWaveEmitter.tiempoVida = 14;
+		blueWaveEmitter.preEmit(1);
+		
+		redWaveEmitter = new ParticleEmitter(ParticleType.REDWAVE);
+		redWaveEmitter.posicion = new Vector2(GameBox.getWindowWidth()-140, -400);
+		redWaveEmitter.direccion = new Vector2(0,1);
+		redWaveEmitter.velocidad = new Vector2(1, 2);
+		redWaveEmitter.tiempoVida = 14;
+		redWaveEmitter.preEmit(1f);
+	}
+	
+	/**
+	 * Dibuja la interfaz grafica encima de todos los demas elementos del juego.
+	 */
 	@Override
 	public void RenderGui(Graphics2D g) {
 		super.RenderGui(g);
@@ -81,6 +121,9 @@ public class MainMenu extends GameState implements UIListener{
 	public void Render(Graphics2D g) { 
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, GameBox.getWindowWidth(), GameBox.getWindowHeight());
+		
+		blueWaveEmitter.draw(g);
+		redWaveEmitter.draw(g);
 	}
 	
 	@Override
@@ -98,7 +141,11 @@ public class MainMenu extends GameState implements UIListener{
 	@Override
 	public void Update(double delta) {
 		super.Update(delta);
+		
 		manager.update();
+		
+		blueWaveEmitter.update(delta);
+		redWaveEmitter.update(delta);
 	}
 
 	@Override

@@ -2,13 +2,17 @@
 package me.pokemutt.connectFour.ui;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
 import me.pokemutt.connectFour.ConnectFour;
+import me.zmsky.core.GameBox;
 
 /**
  * 
@@ -92,32 +96,39 @@ public class Button extends GUI{
      * @param g The current graphical context.
      */
     public void draw(Graphics2D g) { 
-    	AlphaComposite defaultComposite = (AlphaComposite) g.getComposite();
-    	
-    	g.setColor(backgroundColor);
-    	g.fillRect(x, y, width, height);
-    	
-    	g.setComposite(defaultComposite.derive(opacity));
-    	
-    	if(isHoveredOn){
-    		g.setColor(highlightColor);
-    		g.fillRect(x, y, width, height);
+    	if(isEnabled){
+    		Stroke s = g.getStroke();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	    	g.setComposite(GameBox.getDefaultComposite().derive(opacity));
+	    	
+	    	g.setColor(backgroundColor);
+	    	g.fillRoundRect(x, y, width, height, 10, 10);
+			g.setStroke(new BasicStroke(3,BasicStroke.CAP_BUTT,0));
+			g.setColor(isHoveredOn ? Color.ORANGE : Color.WHITE); g.drawRoundRect(x-1, y-1, width+1, height+1, 10, 10);
+			g.setStroke(s);
+	    	
+	    	if(isHighlighted){
+	    		g.setColor(highlightColor);
+	    		g.fillRect(x, y, width, height);
+	    	}
+	    	
+	    	//Drawing text inside the button.
+	    	g.setComposite(GameBox.getDefaultComposite());
+	    	g.setColor(Color.WHITE);
+	    	g.setFont(UIFont);
+	    	
+	    	int fontHeight = (int) UIFont.createGlyphVector(g.getFontRenderContext(), text).getVisualBounds().getHeight();
+	    	
+	    	int textX = (x + width/2) - (g.getFontMetrics().stringWidth(text)/2);
+	    	int textY = (y + height/2) + (fontHeight/2);
+	    	
+	    	if(shiftTextLeft)
+	    		textX = x + padding/2;
+	    	
+	    	g.drawString(text, textX , textY);
+	    	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     	}
-    	
-    	//Drawing text inside the button.
-    	g.setComposite(defaultComposite);
-    	g.setColor(Color.WHITE);
-    	g.setFont(UIFont);
-    	
-    	int textX = (x + width/2) - (g.getFontMetrics().stringWidth(text)/2);
-    	int textY = (y + padding) + (height/2 - ((g.getFontMetrics().getHeight() + g.getFontMetrics().getDescent())/2));
-    	
-    	if(shiftTextLeft)
-    		textX = x + padding/2;
-    	
-    	g.drawString(text, textX , textY);
-    	g.setColor(Color.BLACK);
-    	g.drawRect(x, y, width, height);
     }
     
     public void onMouseMove(int button, int x, int y, boolean Drag) { 
@@ -146,7 +157,7 @@ public class Button extends GUI{
     	if(isHoveredOn)
     		opacity = opacity < 0.9f ? opacity + 0.05f : 1.0f;
     	else
-    		opacity = opacity > 0.1f ? opacity - 0.05f : 0.1f;
+    		opacity = opacity > 0.6f ? opacity - 0.05f : 0.6f;
     }
     
     public void setShiftLeftMode(boolean value){ shiftTextLeft = value; }
