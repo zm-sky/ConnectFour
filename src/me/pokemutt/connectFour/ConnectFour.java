@@ -18,12 +18,12 @@ public class ConnectFour {
 		ImageCenter.setImageCenterDefaultPath("me/pokemutt/connectFour/resources/");
 		
 		//Iniciando CoreEngine y dandole los parametros que ocupa para iniciar.
-		GameBox.InitGame("Connect Four", 800, 600);
+		GameBox.InitGame("Connect Four - Alpha v.1.030218", 1000, 700);
 		
 		//Registrando nuestros estados de juego.
 		GameBox.getStateHandler().registerState(new MainMenu());
 		GameBox.getStateHandler().registerState(new Gameplay());
-		GameBox.getStateHandler().enterState(GameStates.MAINMENU);
+		GameBox.getStateHandler().enterState(GameStates.GAMEPLAY);
 		
 		//Finalmente iniciamos el juego.
 		GameBox.StartGame();

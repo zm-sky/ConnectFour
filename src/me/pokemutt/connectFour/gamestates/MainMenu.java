@@ -42,9 +42,9 @@ public class MainMenu extends GameState implements UIListener{
 		int y = GameBox.getWindowHeight()/2;
 		
 		manager.addUIElement(new Button(MAINMENU, "PlayButton", "Play Game", x, y - 70, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "OnlineButton", "Online", x, manager.getUIElement("PlayButton").getY() + 85, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "OptionsButton", "Options", x, manager.getUIElement("OnlineButton").getY() + 85, 120, 50));
-		manager.addUIElement(new Button(MAINMENU, "ExitButton", "Quit", x, manager.getUIElement("OptionsButton").getY() + 85, 120, 50));
+		manager.addUIElement(new Button(MAINMENU, "OnlineButton", "Online", x, manager.getUIElement("PlayButton").getY() + 78, 120, 50));
+		manager.addUIElement(new Button(MAINMENU, "OptionsButton", "Options", x, manager.getUIElement("OnlineButton").getY() + 78, 120, 50));
+		manager.addUIElement(new Button(MAINMENU, "ExitButton", "Quit", x, manager.getUIElement("OptionsButton").getY() + 78, 120, 50));
 		manager.addUIListener(this);
 	}
 

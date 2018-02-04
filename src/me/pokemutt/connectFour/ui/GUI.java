@@ -52,6 +52,11 @@ public abstract class GUI{
 	protected Color highlightColor = new Color(170, 170, 170);
 	
 	/**
+	 * Determines if the mouse is currently hovering over this UI element.
+	 */
+	protected boolean isHighlighted;
+	
+	/**
 	 * Determines if a GUI element is enabled.
 	 */
 	protected boolean isEnabled = true;
@@ -76,6 +81,19 @@ public abstract class GUI{
 		for(UIListener listener : listeners)
 			listener.onUIAction(this, distinctiveID);
 	}
+	
+
+    public void onMouseMove(int button, int x, int y, boolean Drag) { 
+    	if(x >= this.x  && x <= this.x + width){
+			if(y >= this.y  && y <= this.y + width){
+				isHighlighted = true;
+				
+				return;
+			}
+		}
+		
+		isHighlighted = false;
+    }
 	
 	/**
 	 * Sets the enabled flag of this UI element.
@@ -202,7 +220,6 @@ public abstract class GUI{
     public final String getDistinctiveID(){ return distinctiveID; }
     public final boolean isEnabled(){ return isEnabled; }
     public final boolean shouldDraw(){ return !noDraw; }
-    public void onMouseMove(int button, int x, int y, boolean Drag) { }
     public void onMouseWheelMove(MouseWheelEvent e) {}
     public void onKeyPressed(KeyEvent e) { }
     public void onKeyReleased(KeyEvent e) { }
